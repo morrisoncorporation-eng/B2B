@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage
 from .models import Page, Jumbotron
 from main.market.models import Store
+from django.http import HttpResponse, HttpResponseBadRequest
+
 
 
 def pages(request):
@@ -60,6 +62,8 @@ def get_category(request):
                 "category_name": category_name,
             },
         )
+
+    return HttpResponse("This endpoint is currently HTMX-only.", status=200)
 
 
 def get_more(request):
@@ -135,6 +139,7 @@ def get_more(request):
 
 
 def search_view(request):
+    page_obj = None 
     if request.htmx:
         q = request.GET.get("q")
         stores = Store.objects.filter(name__icontains=q).order_by("name")

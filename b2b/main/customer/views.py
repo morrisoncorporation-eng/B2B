@@ -30,9 +30,11 @@ def update_profile(request):
     if request.method == "POST":
         first_name = request.POST.get("first_name")
         last_name = request.POST.get("last_name")
+        date_of_birth = request.POST.get("date_of_birth")
         user = User.objects.get(username=request.user.username)
         user.first_name = first_name
         user.last_name = last_name
+        user.date_of_birth = date_of_birth
         user.save()
 
         form = CustomerForm(request.POST, instance=customer)

@@ -74,6 +74,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
     "django_user_agents.middleware.UserAgentMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -238,3 +239,10 @@ import dj_database_url
 
 prod_db = dj_database_url.config(conn_max_age=500)
 DATABASES["default"].update(prod_db)
+
+
+# Local settings override
+try:
+    from .local_settings import *  
+except ImportError:
+    pass

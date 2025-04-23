@@ -74,14 +74,25 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 
+def get_admin_site_config():
+    try:
+        config = SiteConfiguration.get_solo()
+        return {
+            'header': config.site_name,
+            'title': getattr(config, 'site_title', 'Admin'),
+            'index_title': getattr(config, 'index_title', 'Admin')
+        }
+    except Exception:
+        return {
+            'header': 'Admin',
+            'title': 'Admin',
+            'index_title': 'Admin'
+        }
 
-
-# config = SiteConfiguration.objects.get()
-config = SiteConfiguration.get_solo()
-
-
-admin.site.site_header = config.site_name
-# admin.site.site_title = config.site_title
-# admin.site.index_title = config.index_title
+# Apply the configuration
+config = get_admin_site_config()
+admin.site.site_header = config['header']
+admin.site.site_title = config['title']
+admin.site.index_title = config['index_title']
 
 admin.site.register(SiteConfiguration, SingletonModelAdmin)

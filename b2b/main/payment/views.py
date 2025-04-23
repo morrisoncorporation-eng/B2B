@@ -18,7 +18,8 @@ from main.order.models import Order
 from main.site_settings.models import SiteConfiguration
 from . import forms
 
-coinbase_api_key = SiteConfiguration.objects.get().coin_base_api_key
+def get_coinbase_api_key():
+    return SiteConfiguration.objects.get().coin_base_api_key
 # stripe_api_key =  SiteConfiguration.objects.get()
 logger = logging.getLogger(__name__)
 User = get_user_model()

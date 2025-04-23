@@ -23,7 +23,7 @@ def shipping_index(request):
     customer = Customer.objects.get(user=request.user)
     address = Address.objects.filter(customer=customer).filter(default=True).first()
     form = ShippingForm()
-    items = Cart.objects.filter(id__in=request.session.get("cart_ids"))
+    items = Cart.objects.filter(id__in=request.session.get("cart_ids", []))
     if request.htmx:
         choice = request.GET.get("ship_to")
         if choice == "address":

@@ -4,11 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "==3.2.7"
 pillow = "*"
 django-cors-headers = "*"
 djangorestframework = "*"
-whitenoise = "*"
 dj-database-url = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
@@ -31,6 +29,7 @@ ua-parser = "*"
 user-agents = "*"
 django-user-agents = "*"
 python-memcached = "*"
+whitenoise = "*"
 
 [dev-packages]
 black = "*"
