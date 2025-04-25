@@ -23,8 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config.get("SECRET_KEY", os.environ.get("SECRET_KEY"))
-
+SECRET_KEY = 'dev-secret-key-change-this'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -98,15 +97,9 @@ TEMPLATES = [
     },
 ]
 
-STRIPE_LIVE_SECRET_KEY = config.get(
-    "STRIPE_LIVE_SECRET_KEY", os.environ.get("STRIPE_LIVE_SECRET_KEY")
-)
-STRIPE_TEST_SECRET_KEY = config.get(
-    "STRIPE_TEST_SECRET_KEY", os.environ.get("STRIPE_TEST_SECRET_KEY")
-)
-STRIPE_PUBLISHABLE_KEY = config.get(
-    "STRIPE_PUBLISHABLE_KEY", os.environ.get("STRIPE_PUBLISHABLE_KEY")
-)
+STRIPE_LIVE_SECRET_KEY = 'sk_test_xxxxxxxxxxxxxxxxxx'
+STRIPE_TEST_SECRET_KEY = 'sk_test_xxxxxxxxxxxxxxxxxx'
+STRIPE_PUBLISHABLE_KEY = 'sk_test_xxxxxxxxxxxxxxxxxx'
 STRIPE_LIVE_MODE = False  # Change to True in production
 DJSTRIPE_WEBHOOK_SECRET = "whsec_xxx"  # Get it from the section in the Stripe dashboard where you added the webhook endpoint
 DJSTRIPE_USE_NATIVE_JSONFIELD = (
@@ -114,10 +107,10 @@ DJSTRIPE_USE_NATIVE_JSONFIELD = (
 )
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"  # Set to `"id"` for all new 2.4+ installations
 
+
 CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
-        "LOCATION": "127.0.0.1:11211",
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
 
@@ -193,13 +186,13 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = (str(BASE_DIR.joinpath("static")),)  # new
-STATIC_ROOT = str(BASE_DIR.joinpath("staticfiles"))  # new
+STATIC_ROOT = Path(__file__).resolve().parent.parent / 'staticfiles'
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage' # new
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = Path(__file__).resolve().parent.parent / 'media'
 
 if in_heroku:
     CLOUDINARY_STORAGE = {
@@ -207,42 +200,26 @@ if in_heroku:
         "API_KEY": config.get("API_KEY", os.environ.get("API_KEY")),
         "API_SECRET": config.get("API_SECRET", os.environ.get("API_SECRET")),
     }
-    DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    EMAIL_HOST = "smtp.gmail.com"
-    EMAIL_HOST_USER = config.get("EMAIL_USER", os.environ.get("EMAIL_USER"))
-    EMAIL_HOST_PASSWORD = config.get("EMAIL_PASSWORD", os.environ.get("EMAIL_PASSWORD"))
-    EMAIL_PORT = 587
-    EMAIL_USE_TLS = True
-    DEFAULT_FROM_EMAIL = "B2B"
-else:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
+# Use SQLite for local development
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": config.get("DB_NAME"),
-        "USER": config.get("DB_USER"),
-        "PASSWORD": config.get("DB_PASSWORD"),
-        "HOST": config.get("DB_HOST"),
-        "PORT": config.get("DB_PORT"),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-import dj_database_url
-
-prod_db = dj_database_url.config(conn_max_age=500)
-DATABASES["default"].update(prod_db)
 
 
-# Local settings override
-try:
-    from .local_settings import *  
-except ImportError:
-    pass
+
+
