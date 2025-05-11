@@ -69,3 +69,4 @@ user-agents==2.2.0
 w3lib==2.3.1
 whitenoise==6.9.0
 zope.interface==7.2
+psycopg2-binary>=2.9.3
